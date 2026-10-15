@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+*.egg-info/
+
+# Notebooks
+.ipynb_checkpoints/
+
+# Secrets (never commit tokens or keys)
+.env
+*.key
+hf_token*
+
+# Data, model weights and training artifacts
+data/
+outputs/
+checkpoints/
+adapters/
+runs/
+wandb/
+*.safetensors
+*.bin
+*.pt
+*.pth
+*.gguf
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
