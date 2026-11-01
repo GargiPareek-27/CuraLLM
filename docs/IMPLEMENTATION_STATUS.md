@@ -21,7 +21,7 @@ Legend: **WRITTEN** = files exist but have not been executed. **VERIFIED** = a c
 
 - Next.js web app (Phase 1b). It will be generated with `create-next-app` so versions come from the current release, then extended.
 - Dependency lockfile. `requirements.txt` files use version ranges, which is not reproducible. A lockfile must be generated on a machine with network access and committed.
-- GitHub Actions workflow.
+- GitHub Actions workflow: WRITTEN (`.github/workflows/ci.yml`: lint, unit tests, and a full-stack smoke test that runs migrate and verify), not yet run on GitHub.
 - Any test run result. No claim of passing tests is made.
 
 ## Review fixes after the first self-review (v2)

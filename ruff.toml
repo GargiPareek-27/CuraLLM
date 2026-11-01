@@ -1,0 +1,7 @@
+# Deliberately minimal: syntax errors and pyflakes (unused imports, undefined names).
+# Style rules can be added later once the code has been linted on a real machine.
+line-length = 100
+target-version = "py312"
+
+[lint]
+select = ["E9", "F"]

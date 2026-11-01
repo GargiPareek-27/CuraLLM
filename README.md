@@ -1,5 +1,7 @@
 # CuraLLM
 
+[![CI](https://github.com/GargiPareek-27/CuraLLM/actions/workflows/ci.yml/badge.svg)](https://github.com/GargiPareek-27/CuraLLM/actions/workflows/ci.yml)
+
 **An evidence-grounded, uncertainty-aware medical information assistant, built as a research and engineering project.**
 
 > **Not medical advice.** CuraLLM is a portfolio/research project. It does not diagnose, and it does not recommend individual treatment. It is not for clinical use.
@@ -74,7 +76,7 @@ CuraLLM/
 └── doc/, docs/                References.md (exists); RUNBOOK.md and IMPLEMENTATION_STATUS.md
 ```
 
-See `docs/IMPLEMENTATION_STATUS.md` for exactly what is written, verified and planned, and `docs/RUNBOOK.md` for commands.
+See `docs/ARCHITECTURE.md` for the design and its trade-offs, `docs/IMPLEMENTATION_STATUS.md` for exactly what is written, verified and planned, and `docs/RUNBOOK.md` for commands.
 
 ## Compute and environment (measured)
 
