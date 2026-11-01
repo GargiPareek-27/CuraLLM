@@ -10,7 +10,10 @@ This project is at an early stage. Everything not marked "Done" below has **not 
 
 | Component | Status |
 |---|---|
-| Repository setup (license, references, README) | Done |
+| Repository setup (license, references, README, .gitignore) | Done |
+| Backend foundation: Docker Compose, PostgreSQL + pgvector, FastAPI, mock inference, migration, scripts | Written, **not yet run or tested** |
+| Dataset inspection script (`ml/data/inspect_datasets.py`) | Written, not yet run |
+| Web app (Next.js) | Not started |
 | Data curation pipeline | Not started |
 | QLoRA SFT and DPO on Llama-3.1-8B-Instruct | Not started |
 | Hallucination taxonomy and hand-labelled evaluation set | Not started |
@@ -53,33 +56,25 @@ Conditions compared on the same held-out, hand-labelled questions: Base, SFT, SF
 
 ## Repository layout
 
-Files marked **(exists)** are in the repo today. The rest are planned and will be created as each stage is built.
+Files marked **(exists)** are in the repo today; the rest are planned.
 
 ```
 CuraLLM/
-├── README.md                       (exists) this file: status, goals, layout
-├── LICENSE                         (exists) MIT, covers the code only
-├── .gitignore                      keeps data, model weights, checkpoints and secrets out of git
-├── doc/
-│   ├── References.md               (exists) papers the design is based on
-│   ├── architecture.md             how the pieces fit together, and why
-│   ├── evaluation.md               metrics, annotation guideline, statistics used
-│   ├── dataset_card.md             data sources, licenses, filtering counts
-│   ├── model_card.md               what the model is, what it is not, known limits
-│   └── safety.md                   safety design and red-team results
-├── notebooks/                      runnable Colab experiments, one per stage
-│   └── (planned)                   data audit, SFT, DPO, evaluation, RAG, verification
-├── configs/                        experiment settings (model, LoRA rank, learning rate, seed)
-├── src/
-│   ├── data/                       loading, cleaning, deduplication, leakage checks
-│   ├── training/                   SFT and DPO with checkpoint/resume
-│   ├── retrieval/                  chunking, embeddings, index, source metadata
-│   ├── verification/               claim extraction and claim-vs-evidence checking
-│   ├── safety/                     emergency/diagnosis routing and the abstention gate
-│   ├── evaluation/                 metrics, judge-vs-human comparison, paired statistics
-│   └── serving/                    API and user interface
-└── tests/                          automated checks for the parts that can silently break
+├── README.md, LICENSE, .gitignore, .gitattributes, .env.example, docker-compose.yml
+├── apps/web/                  Next.js patient, doctor and admin app (planned)
+├── services/
+│   ├── api/                   FastAPI: health, chat, later auth, cases, consent
+│   └── inference/             model providers (mock now; Ollama and vLLM-compatible planned)
+├── ml/
+│   ├── data/                  dataset inspection, preparation, validation
+│   ├── training/              optional QLoRA SFT (and DPO) experiments (planned)
+│   └── evaluation/            retrieval, generation and safety evaluation (planned)
+├── scripts/                   setup, dev, stop, migrate, test (bash and PowerShell)
+├── tests/                     cross-service integration, security and end-to-end tests (planned)
+└── doc/, docs/                References.md (exists); RUNBOOK.md and IMPLEMENTATION_STATUS.md
 ```
+
+See `docs/IMPLEMENTATION_STATUS.md` for exactly what is written, verified and planned, and `docs/RUNBOOK.md` for commands.
 
 ## Compute and environment (measured)
 
