@@ -1,22 +1,28 @@
 version: 2
 updates:
-  - package-ecosystem: pip
-    directory: /services/api
-    schedule:
-      interval: weekly
-  - package-ecosystem: pip
-    directory: /services/inference
-    schedule:
-      interval: weekly
-  - package-ecosystem: docker
-    directory: /services/api
-    schedule:
-      interval: weekly
-  - package-ecosystem: docker
-    directory: /services/inference
-    schedule:
-      interval: weekly
+  # GitHub Actions: low risk and verified by CI. One grouped PR, monthly.
   - package-ecosystem: github-actions
     directory: /
     schedule:
-      interval: weekly
+      interval: monthly
+    open-pull-requests-limit: 2
+    groups:
+      actions:
+        patterns: ["*"]
+
+  # Base images: stay on Python 3.12 until we decide to move.
+  - package-ecosystem: docker
+    directories:
+      - /services/api
+      - /services/inference
+    schedule:
+      interval: monthly
+    open-pull-requests-limit: 2
+    ignore:
+      - dependency-name: python
+        update-types:
+          - version-update:semver-major
+          - version-update:semver-minor
+
+  # pip is intentionally not listed until a lockfile exists. The web app's
+  # npm updates will be added when apps/web is committed.
