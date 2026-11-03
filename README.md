@@ -6,6 +6,10 @@
 
 > **Not medical advice.** CuraLLM is a portfolio/research project. It does not diagnose, and it does not recommend individual treatment. It is not for clinical use.
 
+![CuraLLM chat page in demo mode](docs/images/chat-demo.png)
+
+*Current state: the chat page talks to a real API, but answers come from a deterministic mock model, so there are no real medical answers or sources yet.*
+
 ## Status
 
 This project is at an early stage. Everything not marked "Done" below has **not been built or measured yet**.
@@ -13,9 +17,9 @@ This project is at an early stage. Everything not marked "Done" below has **not 
 | Component | Status |
 |---|---|
 | Repository setup (license, references, README, .gitignore) | Done |
-| Backend foundation: Docker Compose, PostgreSQL + pgvector, FastAPI, mock inference, migration, scripts | Done. CI (lint, unit tests, full-stack smoke test) passes on GitHub's Linux runner; not yet run by the author on Windows |
+| Backend foundation: Docker Compose, PostgreSQL + pgvector, FastAPI, mock inference, migration, scripts | Done. CI (lint, unit tests, full-stack smoke test) passes on GitHub's Linux runner, and the stack, scripts and tests also run locally on Windows with Docker Desktop |
 | Dataset inspection script (`ml/data/inspect_datasets.py`) | Written, not yet run |
-| Web app (Next.js chat page) | Written, build and lint **not yet verified** |
+| Web app (Next.js chat page) | Done for Phase 1: lint and build pass, and the page was run in a browser against the Dockerized API, including the error and retry state |
 | Data curation pipeline | Not started |
 | QLoRA SFT and DPO on Llama-3.1-8B-Instruct | Not started |
 | Hallucination taxonomy and hand-labelled evaluation set | Not started |
