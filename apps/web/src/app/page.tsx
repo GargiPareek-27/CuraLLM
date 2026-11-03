@@ -8,7 +8,7 @@ export default function Home() {
           <div>
             <h1 className="text-xl font-semibold tracking-tight">CuraLLM</h1>
             <p className="text-sm text-slate-600 dark:text-slate-400">
-              General health information with sources. Early-stage demo.
+              General health information. Early-stage demo: evidence retrieval is not built yet.
             </p>
           </div>
           <span className="shrink-0 rounded-full border border-amber-300 bg-amber-50 px-3 py-1 text-xs font-medium text-amber-800 dark:border-amber-700 dark:bg-amber-950 dark:text-amber-200">
