@@ -139,8 +139,35 @@ This keeps the database volume.
 ./scripts/reset.sh --confirm-delete-local-data
 ```
 
+## 8. Web app (Next.js)
+
+Start the backend first (steps 1 to 3). Then, from `apps/web`:
+
+```powershell
+cd apps\web
+npm install
+npm run dev
+```
+```bash
+cd apps/web
+npm install
+npm run dev
+```
+
+Open http://localhost:3000. Use `localhost`, not `127.0.0.1`, because the API only allows the origin `http://localhost:3000` (`CORS_ORIGINS`). Ask a question: the answer must carry a "Demo response" badge, and Sources must say that no evidence is retrieved yet.
+
+The API address defaults to `http://127.0.0.1:8000`. Override it with `NEXT_PUBLIC_API_URL` (PowerShell: `$env:NEXT_PUBLIC_API_URL="http://127.0.0.1:8000"` before `npm run dev`).
+
+Checks that also run in CI:
+
+```
+npm run lint
+npm run build
+```
+
 ## Troubleshooting
 
+- **Web page says it could not reach the API:** start the backend (`scripts/dev`), open the page at `http://localhost:3000`, and check `NEXT_PUBLIC_API_URL`.
 - **Port already in use:** change the matching `*_HOST_PORT` in `.env`, then run the dev script again.
 - **`POSTGRES_PASSWORD` rejected:** use 12+ characters from letters, digits, `_`, `-`.
 - **API never becomes ready:** `docker compose logs api inference postgres`.

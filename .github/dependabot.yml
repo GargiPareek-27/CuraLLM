@@ -24,5 +24,16 @@ updates:
           - version-update:semver-major
           - version-update:semver-minor
 
-  # pip is intentionally not listed until a lockfile exists. The web app's
-  # npm updates will be added when apps/web is committed.
+  # Web app: the committed package-lock.json makes npm updates testable in CI.
+  - package-ecosystem: npm
+    directory: /apps/web
+    schedule:
+      interval: monthly
+    open-pull-requests-limit: 2
+    groups:
+      npm-minor-patch:
+        update-types:
+          - minor
+          - patch
+
+  # pip is intentionally not listed until a Python lockfile exists.

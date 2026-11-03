@@ -13,9 +13,9 @@ This project is at an early stage. Everything not marked "Done" below has **not 
 | Component | Status |
 |---|---|
 | Repository setup (license, references, README, .gitignore) | Done |
-| Backend foundation: Docker Compose, PostgreSQL + pgvector, FastAPI, mock inference, migration, scripts | Written, **not yet run or tested** |
+| Backend foundation: Docker Compose, PostgreSQL + pgvector, FastAPI, mock inference, migration, scripts | Done. CI (lint, unit tests, full-stack smoke test) passes on GitHub's Linux runner; not yet run by the author on Windows |
 | Dataset inspection script (`ml/data/inspect_datasets.py`) | Written, not yet run |
-| Web app (Next.js) | Not started |
+| Web app (Next.js chat page) | Written, build and lint **not yet verified** |
 | Data curation pipeline | Not started |
 | QLoRA SFT and DPO on Llama-3.1-8B-Instruct | Not started |
 | Hallucination taxonomy and hand-labelled evaluation set | Not started |
