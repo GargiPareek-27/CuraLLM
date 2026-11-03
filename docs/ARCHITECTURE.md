@@ -6,7 +6,7 @@ Status key: **written** = code exists but has not been run by the author yet; **
 
 ```mermaid
 flowchart LR
-  user["User"] --> web["Web app (planned)"]
+  user["User"] --> web["Web app: Next.js (written)"]
   web --> api["API: FastAPI (written)"]
   api --> db[("PostgreSQL + pgvector (written)")]
   api --> inf["Inference service (written)"]
