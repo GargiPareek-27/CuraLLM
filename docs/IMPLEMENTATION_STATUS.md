@@ -1,6 +1,6 @@
 # Implementation status
 
-Last updated: 2026-11-02.
+Last updated: 2026-11-03.
 
 Legend: **VERIFIED (CI)** = ran and passed on GitHub's Linux runner. **WRITTEN** = files exist but have not been executed by the author. **PLANNED** = not started.
 
@@ -15,8 +15,8 @@ Legend: **VERIFIED (CI)** = ran and passed on GitHub's Linux runner. **WRITTEN**
 | Unit tests (API, inference client, inference service) | VERIFIED (CI) | test counts are not recorded here |
 | Lint (ruff, syntax and pyflakes rules only) | VERIFIED (CI) | stricter rules not enabled yet |
 | Dependabot: grouped Actions, base image held, npm for the web app, pip paused | Configured | pip returns once a lockfile exists |
-| PowerShell scripts on Windows | WRITTEN | not yet run by the author |
-| Next.js chat page (`apps/web`) | WRITTEN | lint and build not yet verified; `.github/workflows/web.yml` will run them |
+| PowerShell scripts on Windows (setup, dev, migrate, verify, test) | VERIFIED (local) | run on Windows with Docker Desktop: stack healthy, migration applied, 7 of 7 verify checks passed, 29 API and 16 inference tests passed |
+| Next.js chat page (`apps/web`) | VERIFIED (local) | `npm run lint` and `npm run build` pass; browser test against the Dockerized API passed, including the red error alert and recovery after restarting the API. The `web` CI job result is not recorded here yet |
 
 ## Known limitations
 
@@ -27,6 +27,7 @@ Legend: **VERIFIED (CI)** = ran and passed on GitHub's Linux runner. **WRITTEN**
 - Python dependencies use version ranges, not a lockfile, so Python builds are not fully reproducible. The web app has a committed `package-lock.json`.
 - Containers run as a non-root user but are not otherwise hardened (read-only filesystem, dropped capabilities).
 - The retry loop holds a concurrency slot while it backs off.
+- Test runs print a deprecation warning: Starlette's `TestClient` is moving from `httpx` to `httpx2`. It does not affect the running app; the test dependency will be updated.
 
 ## Phase checklist
 
@@ -40,4 +41,4 @@ Legend: **VERIFIED (CI)** = ran and passed on GitHub's Linux runner. **WRITTEN**
 
 ## Next concrete task
 
-Run `npm run lint` and `npm run build` in `apps/web`, then try the chat page against the running backend and record the result here.
+Record the first `web` CI run here, then start Phase 2: document ingestion, hybrid retrieval, grounded generation with citation validation, and abstention.
