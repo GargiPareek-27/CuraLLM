@@ -1,0 +1,17 @@
+name: Source registry
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Validate the source registry
+        run: python3 ml/data/validate_registry.py
