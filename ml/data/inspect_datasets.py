@@ -12,13 +12,13 @@ import json
 import sys
 from pathlib import Path
 
-# (label, Hugging Face dataset id, config name or None, split)
-# These ids have NOT all been verified on the Hub. A failed load is reported
-# in the output and the report, not hidden.
+# (registry id, label, Hugging Face dataset id, config name or None, split)
+# A dataset is only loaded if source_registry.json allows evaluation use for it.
+# A failed load is reported in the output and the report, not hidden.
 CANDIDATES = [
-    ("chatdoctor_healthcaremagic", "lavita/ChatDoctor-HealthCareMagic-100k", None, "train"),
-    ("medical_meadow_wikidoc", "medalpaca/medical_meadow_wikidoc", None, "train"),
-    ("pubmedqa_labeled", "qiaojin/PubMedQA", "pqa_labeled", "train"),
+    ("pubmedqa", "pubmedqa_labeled", "qiaojin/PubMedQA", "pqa_labeled", "train"),
+    ("medmcqa", "medmcqa", "openlifescienceai/medmcqa", None, "validation"),
+    ("medquad", "medquad", "lavita/MedQuAD", None, "train"),
 ]
 
 SAMPLE_ROWS = 3
@@ -83,6 +83,12 @@ def _print_summary(summary, rows):
             print(f"  {key}: {_as_text(value)[:SAMPLE_CHARS]!r}")
 
 
+def _load_registry():
+    path = Path(__file__).with_name("source_registry.json")
+    data = json.loads(path.read_text(encoding="utf-8"))
+    return {source["id"]: source for source in data["sources"]}
+
+
 def main():
     from importlib.metadata import version
 
@@ -94,8 +100,15 @@ def main():
         "results": {},
     }
 
-    for label, hf_id, config, split in CANDIDATES:
+    registry = _load_registry()
+
+    for registry_id, label, hf_id, config, split in CANDIDATES:
         print(f"\n=== {label}: {hf_id} (config={config}, split={split}) ===")
+        source = registry.get(registry_id)
+        if source is None or source["allowed_uses"]["evaluation"] == "no":
+            print("SKIPPED: the source registry does not allow evaluation use.")
+            report["results"][label] = {"hf_id": hf_id, "skipped": "not allowed by source registry"}
+            continue
         try:
             dataset = load_dataset(hf_id, config, split=split)
         except Exception as error:  # report every failure, hide nothing

@@ -1,0 +1,553 @@
+{
+  "schema_version": 1,
+  "verified_on": "2026-11-03",
+  "note": "Rights information is recorded from official pages where possible. 'verification.method' says how each source was checked; anything not read in full is stated. Not legal advice.",
+  "sources": [
+    {
+      "id": "medlineplus_health_topics",
+      "name": "MedlinePlus health topic summaries and medical test information (NLM/NIH)",
+      "publisher": "U.S. National Library of Medicine",
+      "kind": "corpus",
+      "status": "approved",
+      "jurisdiction": "US",
+      "languages": [
+        "en",
+        "es"
+      ],
+      "homepage": "https://medlineplus.gov/",
+      "license": {
+        "name": "U.S. federal government work, not copyrighted (public domain)",
+        "url": "https://medlineplus.gov/about/using/usingcontent/",
+        "verification": {
+          "method": "official_page_fetched",
+          "checked_on": "2026-11-03",
+          "notes": "Page lists health topic summaries, medical test information and Genetics summaries as public domain. The page itself was last updated October 26, 2022, so terms must be re-checked before release."
+        }
+      },
+      "allowed_uses": {
+        "rag": "yes",
+        "evaluation": "yes",
+        "training": "conditional",
+        "redistribution": "yes"
+      },
+      "attribution": "Courtesy of MedlinePlus from the National Library of Medicine",
+      "restrictions": [
+        "Use only the public-domain areas: health topic summaries, medical test information, Genetics summaries.",
+        "Never ingest the A.D.A.M. encyclopedia, ASHP drug monographs or images (see medlineplus_licensed_content).",
+        "Do not frame or re-host MedlinePlus pages under another domain or imply they are another site's pages.",
+        "Indicate MedlinePlus.gov as the source when using the XML files."
+      ],
+      "access": {
+        "method": "daily health topic XML files (published Tuesday to Saturday); also a web service",
+        "url": "https://medlineplus.gov/xml.html",
+        "example_file": "https://medlineplus.gov/xml/mplus_topics_2026-11-03.xml",
+        "notes": "Each topic record has title, URL, language, creation date, ID, MeSH terms, full summary and related links. Record the file date as the corpus version."
+      },
+      "risks": [
+        "US-centric content (US care system and services).",
+        "Summaries are general consumer text, not guidelines, so they are weak evidence for clinical specifics."
+      ]
+    },
+    {
+      "id": "medlineplus_licensed_content",
+      "name": "MedlinePlus copyrighted content (A.D.A.M. Medical Encyclopedia, ASHP drug monographs, most images)",
+      "publisher": "A.D.A.M., Inc.; American Society of Health-System Pharmacists; other rights holders",
+      "kind": "corpus",
+      "status": "rejected",
+      "jurisdiction": "US",
+      "languages": [
+        "en",
+        "es"
+      ],
+      "homepage": "https://medlineplus.gov/",
+      "license": {
+        "name": "Copyrighted, licensed to NLM for display on MedlinePlus only",
+        "url": "https://medlineplus.gov/about/using/usingcontent/",
+        "verification": {
+          "method": "official_page_fetched",
+          "checked_on": "2026-11-03",
+          "notes": "Page says these materials are copyrighted and that ingesting or branding them in a health IT system requires a license from the vendor."
+        }
+      },
+      "allowed_uses": {
+        "rag": "no",
+        "evaluation": "no",
+        "training": "no",
+        "redistribution": "no"
+      },
+      "attribution": null,
+      "restrictions": [
+        "Excluded from every ingestion path. Single direct links to these pages are allowed."
+      ],
+      "access": {
+        "method": "none",
+        "url": null,
+        "notes": "Exclude by source type when ingesting MedlinePlus data."
+      },
+      "risks": [
+        "Easy to ingest by accident through scraping or through datasets derived from MedlinePlus."
+      ]
+    },
+    {
+      "id": "cdc_web_content",
+      "name": "CDC and ATSDR web content",
+      "publisher": "U.S. Centers for Disease Control and Prevention",
+      "kind": "corpus",
+      "status": "conditional",
+      "jurisdiction": "US",
+      "languages": [
+        "en"
+      ],
+      "homepage": "https://www.cdc.gov/",
+      "license": {
+        "name": "Mostly public domain, with third-party exceptions",
+        "url": "https://cdc.gov/other/agencymaterials.html",
+        "verification": {
+          "method": "official_page_via_search_snippet",
+          "checked_on": "2026-11-03",
+          "notes": "Policy says most content is not subject to copyright but that a federal site can mix public-domain and copyrighted material, and that only some images may be reused. The live page was not fetched in full, so its list of requirements for reuse has not been read."
+        }
+      },
+      "allowed_uses": {
+        "rag": "conditional",
+        "evaluation": "conditional",
+        "training": "conditional",
+        "redistribution": "conditional"
+      },
+      "attribution": "Source: Centers for Disease Control and Prevention (cdc.gov); record page title, URL and access date",
+      "restrictions": [
+        "Read the full 'Use of Agency Materials' requirements before the first ingestion and record them here.",
+        "Ingest only an explicit allowlist of pages, never a crawl.",
+        "Check each page for third-party copyright notices; exclude images and embedded third-party material.",
+        "Do not imply CDC endorsement."
+      ],
+      "access": {
+        "method": "manual allowlist of page URLs",
+        "url": null,
+        "notes": "No bulk download path has been verified."
+      },
+      "risks": [
+        "US-specific guidance (schedules, programs).",
+        "Pages change without notice; store retrieval date and page review date."
+      ]
+    },
+    {
+      "id": "who_publications",
+      "name": "WHO publications and fact sheets",
+      "publisher": "World Health Organization",
+      "kind": "corpus",
+      "status": "conditional",
+      "jurisdiction": "international",
+      "languages": [
+        "en"
+      ],
+      "homepage": "https://www.who.int/",
+      "license": {
+        "name": "CC BY-NC-SA 3.0 IGO (WHO publications)",
+        "url": "https://www.who.int/about/who-we-are/publishing-policies/copyright",
+        "verification": {
+          "method": "official_page_via_search_snippet",
+          "checked_on": "2026-11-03",
+          "notes": "WHO states its publications are CC BY-NC-SA 3.0 IGO: non-commercial copying and adaptation with citation, and adaptations under the same or similar licence. That fact sheets on the website carry the same licence was NOT confirmed."
+        }
+      },
+      "allowed_uses": {
+        "rag": "conditional",
+        "evaluation": "conditional",
+        "training": "conditional",
+        "redistribution": "conditional"
+      },
+      "attribution": "[Title]. Geneva: World Health Organization; [Year]. Licence: CC BY-NC-SA 3.0 IGO.",
+      "restrictions": [
+        "Non-commercial use only. Any paid or commercial deployment needs WHO permission.",
+        "Adaptations (including chunked or rewritten text shown to users) must carry the licence and the adaptation disclaimer from https://www.who.int/copyright and be shared under the same or a similar licence.",
+        "Do not use the WHO logo or imply WHO endorsement.",
+        "Third-party tables, figures and images inside WHO documents need separate permission.",
+        "Confirm the licence of each website page before ingesting it."
+      ],
+      "access": {
+        "method": "manual allowlist of page URLs or documents",
+        "url": "https://www.who.int/copyright",
+        "notes": "No bulk download path has been verified."
+      },
+      "risks": [
+        "ShareAlike can conflict with other licences in the same corpus.",
+        "Global, not India-specific, guidance."
+      ]
+    },
+    {
+      "id": "nhs_website_content",
+      "name": "NHS website (nhs.uk) health content",
+      "publisher": "UK Department of Health and Social Care; delivered by NHS England/Digital",
+      "kind": "corpus",
+      "status": "conditional",
+      "jurisdiction": "UK (England)",
+      "languages": [
+        "en"
+      ],
+      "homepage": "https://www.nhs.uk/",
+      "license": {
+        "name": "NHS website terms and conditions (reuse allowed on stated terms; widely described as Open Government Licence content)",
+        "url": "https://www.nhs.uk/our-policies/terms-and-conditions/",
+        "verification": {
+          "method": "official_page_via_search_snippet",
+          "checked_on": "2026-11-03",
+          "notes": "Terms allow reuse for the purposes and on the terms stated (for unchanged copies, a notice with the copy date and source). A separate page lists content not licensed for re-use. Exact attribution wording and rules for adapted content were not read in full."
+        }
+      },
+      "allowed_uses": {
+        "rag": "conditional",
+        "evaluation": "conditional",
+        "training": "no",
+        "redistribution": "conditional"
+      },
+      "attribution": "Source: NHS website (nhs.uk); record the date the content was copied",
+      "restrictions": [
+        "Read sections 3 onward of the terms for adaptation and attribution rules before ingesting.",
+        "Exclude the sites and images listed at https://www.nhs.uk/our-policies/terms-and-conditions/content-not-licensed-for-re-use/ (for example Change4Life, Smokefree).",
+        "The syndication API has additional terms and requires registration.",
+        "Training use is not clearly covered, so it is not allowed until reviewed."
+      ],
+      "access": {
+        "method": "manual allowlist of page URLs, or the NHS website content API (registration and terms required)",
+        "url": "https://www.nhs.uk/our-policies/terms-and-conditions/",
+        "notes": "Version 1 of the API is retired; version 2 exists."
+      },
+      "risks": [
+        "England-specific services and advice (for example which number to call) would mislead users elsewhere, including India.",
+        "Low priority for an India-focused product."
+      ]
+    },
+    {
+      "id": "openfda_drug_labels",
+      "name": "openFDA drug product labeling (SPL)",
+      "publisher": "U.S. Food and Drug Administration",
+      "kind": "corpus",
+      "status": "conditional",
+      "jurisdiction": "US",
+      "languages": [
+        "en"
+      ],
+      "homepage": "https://open.fda.gov/apis/drug/label/",
+      "license": {
+        "name": "CC0 1.0 / public domain, except data marked as third-party copyrighted",
+        "url": "https://open.fda.gov/license",
+        "verification": {
+          "method": "official_page_via_search_snippet",
+          "checked_on": "2026-11-03",
+          "notes": "openFDA states its content and data are public domain under CC0 unless marked otherwise, and that some data may not be public domain. The API documentation warns not to rely on it for medical decisions and says labels may differ from approved or currently distributed labeling."
+        }
+      },
+      "allowed_uses": {
+        "rag": "conditional",
+        "evaluation": "conditional",
+        "training": "conditional",
+        "redistribution": "conditional"
+      },
+      "attribution": "Source: U.S. FDA via openFDA (attribution recommended)",
+      "restrictions": [
+        "Skip any record or field carrying the 'not in the public domain' warning.",
+        "Always show the date and a 'labels may be outdated' note next to drug information.",
+        "Subject to the openFDA terms of service for API access (rate limits)."
+      ],
+      "access": {
+        "method": "openFDA drug label API or bulk download",
+        "url": "https://open.fda.gov/apis/drug/label/",
+        "notes": "US brand names and regulatory text; not Indian formularies."
+      },
+      "risks": [
+        "Drug advice is high-risk. Retrieval must never turn label text into dosing advice for an individual.",
+        "US products and brand names differ from those used in India."
+      ]
+    },
+    {
+      "id": "pmc_open_access_subset",
+      "name": "PubMed Central Open Access Subset",
+      "publisher": "U.S. National Library of Medicine (articles by many publishers)",
+      "kind": "corpus",
+      "status": "conditional",
+      "jurisdiction": "international",
+      "languages": [
+        "en"
+      ],
+      "homepage": "https://pmc.ncbi.nlm.nih.gov/tools/openftlist",
+      "license": {
+        "name": "Varies per article (Creative Commons or similar)",
+        "url": "https://pmc.ncbi.nlm.nih.gov/tools/openftlist",
+        "verification": {
+          "method": "official_page_via_search_snippet",
+          "checked_on": "2026-11-03",
+          "notes": "Three groups: commercial use allowed (CC0, CC BY, CC BY-SA, CC BY-ND), non-commercial only (CC BY-NC variants), and other. Users are solely responsible for compliance. Bulk retrieval must use the designated services; the page states that from August 2026 full-text datasets move from the FTP service to a cloud service."
+        }
+      },
+      "allowed_uses": {
+        "rag": "conditional",
+        "evaluation": "conditional",
+        "training": "conditional",
+        "redistribution": "conditional"
+      },
+      "attribution": "Per-article licence and citation; store the licence string with every document",
+      "restrictions": [
+        "Store each article's licence and filter by it; start with CC0 and CC BY only.",
+        "CC BY-ND articles may not allow derivative text such as chunk rewrites, so exclude them until reviewed.",
+        "Use only the designated bulk services; no ad-hoc crawling."
+      ],
+      "access": {
+        "method": "PMC cloud service (the FTP service was announced as removed from August 2026)",
+        "url": "https://pmc.ncbi.nlm.nih.gov/tools/textmining/",
+        "notes": "Deferred. Not part of corpus v0."
+      },
+      "risks": [
+        "Research papers are not patient-facing and can be misread as advice.",
+        "Retractions: filter on the retracted flag."
+      ]
+    },
+    {
+      "id": "pubmedqa",
+      "name": "PubMedQA (labeled subset pqa_labeled)",
+      "publisher": "Jin et al. 2019",
+      "kind": "evaluation",
+      "status": "approved",
+      "jurisdiction": "international",
+      "languages": [
+        "en"
+      ],
+      "homepage": "https://pubmedqa.github.io/",
+      "license": {
+        "name": "MIT (dataset card and original repository)",
+        "url": "https://huggingface.co/datasets/qiaojin/PubMedQA",
+        "verification": {
+          "method": "dataset_card_via_search_snippet",
+          "checked_on": "2026-11-03",
+          "notes": "Card metadata says MIT and lists configs pqa_artificial, pqa_labeled, pqa_unlabeled. pqa_labeled has 1,000 expert-annotated questions; the card says 500 of them form the official test set. The MIT licence covers the dataset, not publisher rights in the underlying PubMed abstracts."
+        }
+      },
+      "allowed_uses": {
+        "rag": "no",
+        "evaluation": "yes",
+        "training": "no",
+        "redistribution": "conditional"
+      },
+      "attribution": "Jin et al. (2019), PubMedQA: A Dataset for Biomedical Research Question Answering, EMNLP-IJCNLP. https://arxiv.org/abs/1909.06146",
+      "restrictions": [
+        "Evaluation only; never train on it.",
+        "Do not redistribute abstracts; load from the Hub at run time.",
+        "Record the dataset revision hash with every result."
+      ],
+      "access": {
+        "method": "Hugging Face datasets: qiaojin/PubMedQA, config pqa_labeled",
+        "url": "https://huggingface.co/datasets/qiaojin/PubMedQA",
+        "notes": "Yes/no/maybe questions over research abstracts: tests evidence reading, not patient communication."
+      },
+      "risks": [
+        "Not representative of patient questions.",
+        "Small test set: wide confidence intervals."
+      ]
+    },
+    {
+      "id": "medmcqa",
+      "name": "MedMCQA (AIIMS and NEET PG entrance exam questions)",
+      "publisher": "Pal et al. 2022",
+      "kind": "evaluation",
+      "status": "conditional",
+      "jurisdiction": "India",
+      "languages": [
+        "en"
+      ],
+      "homepage": "https://medmcqa.github.io",
+      "license": {
+        "name": "Apache-2.0 (declared on the dataset card)",
+        "url": "https://huggingface.co/datasets/openlifescienceai/medmcqa",
+        "verification": {
+          "method": "dataset_card_via_search_snippet",
+          "checked_on": "2026-11-03",
+          "notes": "Card declares Apache-2.0. It also says the raw data was collected from open websites and books, so the rights in the underlying exam questions are unclear. Splits shown in the card history: train 182,822, validation 4,183, test 6,150."
+        }
+      },
+      "allowed_uses": {
+        "rag": "no",
+        "evaluation": "conditional",
+        "training": "no",
+        "redistribution": "no"
+      },
+      "attribution": "Pal, Umapathi, Sankarasubbu (2022), MedMCQA, Proceedings of Machine Learning Research 174. https://proceedings.mlr.press/v174/pal22a",
+      "restrictions": [
+        "Evaluation only; never train on it.",
+        "Do not redistribute questions; load from the Hub at run time.",
+        "Treat the declared licence as the dataset compiler's statement, not proof of rights in the exam text."
+      ],
+      "access": {
+        "method": "Hugging Face datasets: openlifescienceai/medmcqa",
+        "url": "https://huggingface.co/datasets/openlifescienceai/medmcqa",
+        "notes": "Exam knowledge benchmark with an Indian medical-exam flavour."
+      },
+      "risks": [
+        "Exam recall is not patient-facing safety.",
+        "Possible contamination if base models saw these questions."
+      ]
+    },
+    {
+      "id": "medqa",
+      "name": "MedQA (USMLE-style board exam questions)",
+      "publisher": "Jin et al. 2020/2021",
+      "kind": "evaluation",
+      "status": "conditional",
+      "jurisdiction": "US",
+      "languages": [
+        "en",
+        "zh"
+      ],
+      "homepage": "https://github.com/jind11/MedQA",
+      "license": {
+        "name": "Not stated in the sources checked (conflicting third-party labels)",
+        "url": "https://github.com/jind11/MedQA",
+        "verification": {
+          "method": "third_party_dataset_cards_via_search_snippet",
+          "checked_on": "2026-11-03",
+          "notes": "The BigBio mirror lists the licence as unknown while a community copy labels CC BY 4.0. The original GitHub repository's licence file was not read. The English set has 12,723 questions per the paper."
+        }
+      },
+      "allowed_uses": {
+        "rag": "no",
+        "evaluation": "conditional",
+        "training": "no",
+        "redistribution": "no"
+      },
+      "attribution": "Jin et al. (2020), What Disease does this Patient Have? https://arxiv.org/abs/2009.13081",
+      "restrictions": [
+        "Read the repository licence directly before first use and record it here.",
+        "Evaluation only; never train on it.",
+        "Do not redistribute."
+      ],
+      "access": {
+        "method": "official repository download",
+        "url": "https://github.com/jind11/MedQA",
+        "notes": "Prefer the official source over mirrors."
+      },
+      "risks": [
+        "US exam format.",
+        "Exam accuracy must never be presented as clinical safety."
+      ]
+    },
+    {
+      "id": "medquad",
+      "name": "MedQuAD (question-answer pairs from NIH websites)",
+      "publisher": "Ben Abacha and Demner-Fushman 2019 (NIH)",
+      "kind": "evaluation",
+      "status": "conditional",
+      "jurisdiction": "US",
+      "languages": [
+        "en"
+      ],
+      "homepage": "https://github.com/abachaa/MedQuAD",
+      "license": {
+        "name": "Dataset licence not confirmed; source answers come from NIH websites, with copyrighted MedlinePlus subsets removed",
+        "url": "https://github.com/abachaa/MedQuAD",
+        "verification": {
+          "method": "github_readme_and_dataset_card_via_search_snippet",
+          "checked_on": "2026-11-03",
+          "notes": "The repository README says answers were removed from three subsets to respect MedlinePlus copyright, and a Hugging Face conversion removes answers for GARD, MPlusHerbsSupplements, ADAM and MPlusDrugs (31,034 records). The paper is CC BY 4.0, but that licence applies to the article. The repository licence file was not read."
+        }
+      },
+      "allowed_uses": {
+        "rag": "no",
+        "evaluation": "conditional",
+        "training": "no",
+        "redistribution": "conditional"
+      },
+      "attribution": "Ben Abacha and Demner-Fushman (2019), A question-entailment approach to question answering, BMC Bioinformatics 20:511.",
+      "restrictions": [
+        "Use only records whose answers are present.",
+        "Read the repository licence before first use and record it here.",
+        "Evaluation only; never train on it."
+      ],
+      "access": {
+        "method": "official repository, or Hugging Face lavita/MedQuAD (converted)",
+        "url": "https://github.com/abachaa/MedQuAD",
+        "notes": "Includes MedlinePlus health topic questions."
+      },
+      "risks": [
+        "LEAKAGE: some questions are built from MedlinePlus health topics, which are also in corpus v0. Use MedQuAD to test whether retrieval finds the source page, not as independent proof of answer quality."
+      ]
+    },
+    {
+      "id": "chatdoctor_healthcaremagic",
+      "name": "ChatDoctor / HealthCareMagic doctor-patient consultation dialogues",
+      "publisher": "scraped from an online consultation service; Hub copy lavita/ChatDoctor-HealthCareMagic-100k",
+      "kind": "corpus",
+      "status": "unreviewed",
+      "jurisdiction": "unknown",
+      "languages": [
+        "en"
+      ],
+      "homepage": null,
+      "license": {
+        "name": "Not reviewed",
+        "url": null,
+        "verification": {
+          "method": "none",
+          "checked_on": "2026-11-03",
+          "notes": "One secondary source listed Apache-2.0 for the Hub copy. That is not evidence about rights in the scraped consultation text, and nothing here was verified."
+        }
+      },
+      "allowed_uses": {
+        "rag": "no",
+        "evaluation": "no",
+        "training": "no",
+        "redistribution": "no"
+      },
+      "attribution": null,
+      "restrictions": [
+        "Excluded until a rights and privacy review is done."
+      ],
+      "access": {
+        "method": "none",
+        "url": null,
+        "notes": "Reasoned concern, not a verified finding: consultation replies tend to give individualized advice, which conflicts with this project's scope."
+      },
+      "risks": [
+        "Scope conflict (individualized advice).",
+        "Unknown rights and privacy status of scraped dialogues."
+      ]
+    },
+    {
+      "id": "medical_meadow_wikidoc",
+      "name": "Medical Meadow WikiDoc",
+      "publisher": "medalpaca (Hub id unverified)",
+      "kind": "corpus",
+      "status": "unreviewed",
+      "jurisdiction": "unknown",
+      "languages": [
+        "en"
+      ],
+      "homepage": null,
+      "license": {
+        "name": "Not reviewed",
+        "url": null,
+        "verification": {
+          "method": "none",
+          "checked_on": "2026-11-03",
+          "notes": "Not researched."
+        }
+      },
+      "allowed_uses": {
+        "rag": "no",
+        "evaluation": "no",
+        "training": "no",
+        "redistribution": "no"
+      },
+      "attribution": null,
+      "restrictions": [
+        "Excluded until reviewed."
+      ],
+      "access": {
+        "method": "none",
+        "url": null,
+        "notes": "Derived from WikiDoc; the licence of the source wiki has not been checked."
+      },
+      "risks": [
+        "Unknown rights."
+      ]
+    }
+  ]
+}
