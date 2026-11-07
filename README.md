@@ -20,10 +20,12 @@ This project is at an early stage. Everything not marked "Done" below has **not 
 | Backend foundation: Docker Compose, PostgreSQL + pgvector, FastAPI, mock inference, migration, scripts | Done. CI (lint, unit tests, full-stack smoke test) passes on GitHub's Linux runner, and the stack, scripts and tests also run locally on Windows with Docker Desktop |
 | Dataset inspection script (`ml/data/inspect_datasets.py`) | Written, not yet run |
 | Web app (Next.js chat page) | Done for Phase 1: lint and build pass, and the page was run in a browser against the Dockerized API, including the error and retry state |
-| Data curation pipeline | Not started |
+| Source registry (13 sources, licences checked against official pages) | Done |
+| MedlinePlus ingestion and keyword search (`/api/v1/search`) | Written, not yet run against the real data |
+| Data curation pipeline (training data) | Not started |
 | QLoRA SFT and DPO on Llama-3.1-8B-Instruct | Not started |
 | Hallucination taxonomy and hand-labelled evaluation set | Not started |
-| Retrieval (RAG) over a public health corpus | Not started |
+| Retrieval (RAG) over a public health corpus | In progress: keyword search written; embeddings and hybrid retrieval not started |
 | Claim-level verification and abstention | Not started |
 | Application and UI | Not started |
 

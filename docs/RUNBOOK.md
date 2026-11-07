@@ -165,9 +165,39 @@ npm run lint
 npm run build
 ```
 
+## 9. Ingest MedlinePlus and search (Phase 2b)
+
+Needs the stack running and migrated (steps 1 to 3). First try the small **synthetic** fixture. It needs no internet, and its topics are invented test text, not medical information:
+
+```powershell
+docker compose exec api python -m app.cli ingest-medlineplus --xml-file tests/fixtures/mplus_sample.xml --corpus-version 2026-01-01
+docker compose exec api python -m app.cli search "zebra fever"
+```
+
+Run the first command a second time. It must report `"unchanged": 3` and `"inserted": 0`.
+
+Then the real data. This downloads the official health topic file for a publication date (files are published Tuesday to Saturday) from medlineplus.gov at run time. Nothing is committed to the repository:
+
+```powershell
+docker compose exec api python -m app.cli ingest-medlineplus --date 2026-11-03
+docker compose exec api python -m app.cli search "high blood pressure"
+```
+
+A full real run deactivates the fixture topics, so they stop appearing in search. Searching over HTTP:
+
+```powershell
+Invoke-RestMethod -Method Post -Uri http://127.0.0.1:8000/api/v1/search -ContentType "application/json" -Body '{"query":"high blood pressure","limit":3}'
+```
+```bash
+curl -s -X POST http://127.0.0.1:8000/api/v1/search -H "Content-Type: application/json" -d '{"query":"high blood pressure","limit":3}'
+```
+
+Every result carries its source URL, licence text, attribution and corpus version. Scores are keyword scores, not probabilities of being correct.
+
 ## Troubleshooting
 
 - **Web page says it could not reach the API:** start the backend (`scripts/dev`), open the page at `http://localhost:3000`, and check `NEXT_PUBLIC_API_URL`.
+- **`search` or `ingest-medlineplus` says the database is not ready:** run `scripts/migrate` (migration 0002 creates the tables).
 - **Port already in use:** change the matching `*_HOST_PORT` in `.env`, then run the dev script again.
 - **`POSTGRES_PASSWORD` rejected:** use 12+ characters from letters, digits, `_`, `-`.
 - **API never becomes ready:** `docker compose logs api inference postgres`.

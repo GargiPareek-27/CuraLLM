@@ -31,6 +31,9 @@ chat="$(curl -s --max-time 15 -X POST "$api/api/v1/chat" -H 'Content-Type: appli
 echo "$chat" | grep -q '"is_demo":true' && pass "chat answers in labelled demo mode" || fail "chat did not return a demo-labelled answer: $chat"
 echo "$chat" | grep -q '"citations":\[\]' && pass "chat citations empty (expected in Phase 1)" || fail "chat citations were not empty"
 
+search="$(curl -s --max-time 15 -X POST "$api/api/v1/search" -H 'Content-Type: application/json' -d '{"query":"fever"}' || true)"
+echo "$search" | grep -q '"results":\[' && pass "search endpoint returns a results list" || fail "search endpoint did not return a results list (run scripts/migrate.sh): $search"
+
 code="$(status_of -X POST "$api/api/v1/chat" -H 'Content-Type: application/json' -d '{"message":"   "}')"
 [ "$code" = "422" ] && pass "blank message rejected (HTTP 422)" || fail "blank message expected 422, got '$code'"
 
