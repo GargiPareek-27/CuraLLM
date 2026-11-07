@@ -1,0 +1,54 @@
+name: Ingestion smoke test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  ingest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+      - name: Create .env with a CI-only password
+        run: |
+          cp .env.example .env
+          sed -i 's/^POSTGRES_PASSWORD=.*/POSTGRES_PASSWORD=ci_only_password_123456/' .env
+      - name: Build and start the stack
+        run: docker compose up -d --build --wait
+      - name: Apply migrations
+        run: bash scripts/migrate.sh
+      - name: Ingest the synthetic fixture
+        run: |
+          docker compose exec -T api python -m app.cli ingest-medlineplus \
+            --xml-file tests/fixtures/mplus_sample.xml --corpus-version 2026-01-01 | tee ingest1.json
+          grep -q '"inserted": 3' ingest1.json
+      - name: Ingest again (must change nothing)
+        run: |
+          docker compose exec -T api python -m app.cli ingest-medlineplus \
+            --xml-file tests/fixtures/mplus_sample.xml --corpus-version 2026-01-01 | tee ingest2.json
+          grep -q '"unchanged": 3' ingest2.json
+          grep -q '"inserted": 0' ingest2.json
+      - name: Search finds the cited passage
+        run: |
+          curl -fsS -X POST http://127.0.0.1:8000/api/v1/search \
+            -H 'Content-Type: application/json' \
+            -d '{"query":"zebra fever stripes"}' | tee search1.json
+          grep -q '"passage_id":"medlineplus_health_topics:9001:0"' search1.json
+          grep -q 'Courtesy of MedlinePlus' search1.json
+      - name: Records with a bad URL were not indexed
+        run: |
+          curl -fsS -X POST http://127.0.0.1:8000/api/v1/search \
+            -H 'Content-Type: application/json' \
+            -d '{"query":"outside the allowed site"}' | tee search2.json
+          grep -q '"results":\[\]' search2.json
+      - name: Show container logs on failure
+        if: failure()
+        run: docker compose logs --no-color
+      - name: Stop and clean up
+        if: always()
+        run: docker compose down -v

@@ -55,6 +55,14 @@ if ($r.Code -eq 200) {
     Fail "chat expected 200, got $($r.Code)"
 }
 
+$r = Call "POST" "$api/api/v1/search" '{"query":"fever"}'
+if ($r.Code -eq 200) {
+    $j = $r.Body | ConvertFrom-Json
+    if ($j.PSObject.Properties.Name -contains "results") { Pass "search endpoint returns a results list" } else { Fail "search response has no results list" }
+} else {
+    Fail "search expected 200, got $($r.Code) (run scripts\migrate.ps1)"
+}
+
 $r = Call "POST" "$api/api/v1/chat" '{"message":"   "}'
 if ($r.Code -eq 422) { Pass "blank message rejected (HTTP 422)" } else { Fail "blank message expected 422, got $($r.Code)" }
 
