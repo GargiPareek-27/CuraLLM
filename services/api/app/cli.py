@@ -4,6 +4,7 @@
   python -m app.cli ingest-medlineplus --date 2026-11-03
   python -m app.cli ingest-medlineplus --xml-file tests/fixtures/mplus_sample.xml --corpus-version 2026-01-01
   python -m app.cli search "high blood pressure"
+  python -m app.cli corpus-stats
 """
 import argparse
 import asyncio
@@ -127,6 +128,20 @@ def cmd_search(args) -> int:
     return 0
 
 
+def cmd_corpus_stats() -> int:
+    from sqlalchemy.exc import SQLAlchemyError
+
+    from app.corpus import corpus_stats
+
+    try:
+        stats = corpus_stats()
+    except SQLAlchemyError as error:
+        print(f"ERROR: database problem ({type(error).__name__}).", file=sys.stderr)
+        return 1
+    print(json.dumps(stats, indent=2, default=str))
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="app.cli")
     sub = parser.add_subparsers(dest="command", required=True)
@@ -145,6 +160,8 @@ def main(argv: list[str] | None = None) -> int:
     search.add_argument("query")
     search.add_argument("--limit", type=int, default=5)
 
+    sub.add_parser("corpus-stats", help="Print counts and chunk-size statistics of the corpus.")
+
     args = parser.parse_args(argv)
     if args.command == "healthcheck":
         return cmd_healthcheck()
@@ -152,6 +169,8 @@ def main(argv: list[str] | None = None) -> int:
         return cmd_ingest_medlineplus(args)
     if args.command == "search":
         return cmd_search(args)
+    if args.command == "corpus-stats":
+        return cmd_corpus_stats()
     return 2
 
 
