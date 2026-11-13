@@ -1,0 +1,17 @@
+name: ML utilities
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  unittest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Run the ml/common tests
+        run: python3 -m unittest discover -s ml/common -t . -p "test_*.py" -v

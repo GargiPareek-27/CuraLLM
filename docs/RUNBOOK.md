@@ -194,6 +194,27 @@ curl -s -X POST http://127.0.0.1:8000/api/v1/search -H "Content-Type: applicatio
 
 Every result carries its source URL, licence text, attribution and corpus version. Scores are keyword scores, not probabilities of being correct.
 
+## 10. Corpus statistics
+
+```powershell
+docker compose exec api python -m app.cli corpus-stats
+```
+
+Prints active and total documents, chunk counts, approximate chunk token sizes (min, median, 95th percentile, max), documents split into several chunks, documents per corpus version, and the last five ingestion runs. Record these numbers in `docs/IMPLEMENTATION_STATUS.md` after each real ingestion.
+
+## 11. Lock the Python dependencies
+
+`services/*/requirements.in` hold the version ranges. `requirements.txt` and `requirements-dev.txt` are generated lockfiles with exact versions and hashes. Regenerate them with Docker running:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\lock.ps1
+```
+```bash
+./scripts/lock.sh
+```
+
+Then run `scripts/test` and `scripts/dev` to confirm everything still works, and commit the changed `.txt` files. The lock is built inside a Linux Python 3.12 container, the same platform as the images and CI. pip enforces the hashes automatically once they are present.
+
 ## Troubleshooting
 
 - **Web page says it could not reach the API:** start the backend (`scripts/dev`), open the page at `http://localhost:3000`, and check `NEXT_PUBLIC_API_URL`.

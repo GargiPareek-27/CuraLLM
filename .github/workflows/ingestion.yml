@@ -33,6 +33,11 @@ jobs:
             --xml-file tests/fixtures/mplus_sample.xml --corpus-version 2026-01-01 | tee ingest2.json
           grep -q '"unchanged": 3' ingest2.json
           grep -q '"inserted": 0' ingest2.json
+      - name: Corpus statistics match the fixture
+        run: |
+          docker compose exec -T api python -m app.cli corpus-stats | tee stats.json
+          grep -q '"active_documents": 3' stats.json
+          grep -q '"documents_with_multiple_chunks": 1' stats.json
       - name: Search finds the cited passage
         run: |
           curl -fsS -X POST http://127.0.0.1:8000/api/v1/search \

@@ -27,6 +27,16 @@ Legend: **VERIFIED (CI)** = ran and passed on GitHub's Linux runner. **WRITTEN**
 | Migration 0002 (documents, chunks, ingestion runs), store, search SQL, CLI, `/api/v1/search` | WRITTEN | not yet executed; the `Ingestion smoke test` CI job runs migrate, ingest, re-ingest and search |
 | Ingesting the real MedlinePlus file | NOT YET RUN | no real counts are recorded yet |
 
+## M0 (roadmap step 0): closing Phase 2
+
+| Item | State | Notes |
+|---|---|---|
+| Hashed Python lockfiles (`requirements.in` to `requirements.txt`) | WRITTEN | tooling in `scripts/lock`; lockfiles not generated yet |
+| Type-check baseline (`mypy`, reports only) | WRITTEN | `.github/workflows/types.yml`; first result not recorded |
+| Run manifest for experiments (`ml/common/manifest.py`) | VERIFIED (sandbox) | 5 stdlib unit tests passed; a CI job runs them |
+| `corpus-stats` command | WRITTEN | SQL not executed yet; the ingestion CI job asserts it on the fixture |
+| Real MedlinePlus ingestion | NOT YET RUN | counts to be recorded here |
+
 ## Known limitations
 
 - Search is keyword-only (PostgreSQL full text). There are no embeddings, no reranking and no hybrid retrieval yet, and the chat endpoint does not use retrieval yet.
