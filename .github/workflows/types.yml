@@ -1,6 +1,8 @@
 name: Type check (baseline)
 
 # Reports type errors without failing the build. Once the count reaches zero this becomes a required check.
+# mypy is installed separately from the locked application environments: the lockfiles enforce
+# hashes, and pip refuses any extra package that has no hash in the same install.
 on:
   push:
     branches: [main]
@@ -14,21 +16,27 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - name: Install the API dependencies and mypy
-        run: python3 -m pip install -r services/api/requirements.txt mypy
+      - name: Install mypy
+        run: python3 -m pip install "mypy>=1.10,<3"
+      - name: Create the API environment from its lockfile
+        run: |
+          python3 -m venv .venv-api
+          .venv-api/bin/pip install -r services/api/requirements.txt
+      - name: Create the inference environment from its lockfile
+        run: |
+          python3 -m venv .venv-inference
+          .venv-inference/bin/pip install -r services/inference/requirements.txt
       - name: Type check the API
         continue-on-error: true
         run: |
-          python3 -m mypy --config-file mypy.ini services/api/app | tee mypy-api.txt
-      - name: Install the inference dependencies
-        run: python3 -m pip install -r services/inference/requirements.txt
+          python3 -m mypy --config-file mypy.ini --python-executable .venv-api/bin/python services/api/app | tee mypy-api.txt
       - name: Type check the inference service
         continue-on-error: true
         run: |
-          python3 -m mypy --config-file mypy.ini services/inference/app | tee mypy-inference.txt
+          python3 -m mypy --config-file mypy.ini --python-executable .venv-inference/bin/python services/inference/app | tee mypy-inference.txt
       - name: Summary
         if: always()
         run: |
           echo "### mypy baseline" >> "$GITHUB_STEP_SUMMARY"
-          echo "api: $(tail -n 1 mypy-api.txt)" >> "$GITHUB_STEP_SUMMARY"
-          echo "inference: $(tail -n 1 mypy-inference.txt)" >> "$GITHUB_STEP_SUMMARY"
+          echo "api: $(tail -n 1 mypy-api.txt 2>/dev/null || echo 'no result')" >> "$GITHUB_STEP_SUMMARY"
+          echo "inference: $(tail -n 1 mypy-inference.txt 2>/dev/null || echo 'no result')" >> "$GITHUB_STEP_SUMMARY"
