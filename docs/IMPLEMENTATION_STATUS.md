@@ -1,6 +1,6 @@
 # Implementation status
 
-Last updated: 2026-11-06.
+Last updated: 2026-11-14.
 
 Legend: **VERIFIED (CI)** = ran and passed on GitHub's Linux runner. **WRITTEN** = files exist but have not been executed by the author. **PLANNED** = not started.
 
@@ -25,17 +25,39 @@ Legend: **VERIFIED (CI)** = ran and passed on GitHub's Linux runner. **WRITTEN**
 | Source registry and validator | VERIFIED (local) | validator passes on Windows; a CI job runs it |
 | HTML-to-text, chunker, MedlinePlus XML parser | WRITTEN | 25 unit tests passed in the author's sandbox using a stand-in for pytest; a real pytest run is pending |
 | Migration 0002 (documents, chunks, ingestion runs), store, search SQL, CLI, `/api/v1/search` | WRITTEN | not yet executed; the `Ingestion smoke test` CI job runs migrate, ingest, re-ingest and search |
-| Ingesting the real MedlinePlus file | NOT YET RUN | no real counts are recorded yet |
+| Ingesting the real MedlinePlus file | VERIFIED (local) | see the M0 section for the real counts |
 
 ## M0 (roadmap step 0): closing Phase 2
 
 | Item | State | Notes |
 |---|---|---|
-| Hashed Python lockfiles (`requirements.in` to `requirements.txt`) | WRITTEN | tooling in `scripts/lock`; lockfiles not generated yet |
+| Hashed Python lockfiles (`requirements.in` to `requirements.txt`) | VERIFIED (local, CI) | generated with `scripts/lock`; images build and container tests pass on the locked versions |
 | Type-check baseline (`mypy`, reports only) | WRITTEN | `.github/workflows/types.yml`; first result not recorded |
 | Run manifest for experiments (`ml/common/manifest.py`) | VERIFIED (sandbox) | 5 stdlib unit tests passed; a CI job runs them |
-| `corpus-stats` command | WRITTEN | SQL not executed yet; the ingestion CI job asserts it on the fixture |
-| Real MedlinePlus ingestion | NOT YET RUN | counts to be recorded here |
+| `corpus-stats` command | VERIFIED (local, CI) | ran on the fixture and on the real corpus; the ingestion CI job asserts it on the fixture |
+| Real MedlinePlus ingestion | VERIFIED (local) | recorded below |
+| Table-aware text conversion | WRITTEN | fixes a defect found in the real data; needs re-ingestion to take effect |
+
+### Real corpus v0 (MedlinePlus health topics)
+
+Ingested locally on 2026-11-14 from the 2026-11-12 file (30,143,637 bytes). These numbers come from the `ingest-medlineplus` report and `corpus-stats`.
+
+| Measure | Value |
+|---|---|
+| English topics ingested | 1,016 |
+| Other-language records skipped | 1,016 |
+| English topics skipped for having no summary | 1 |
+| Chunks | 2,877 (about 2.8 per topic) |
+| Topics with more than one chunk | 585 (57.6%) |
+| Approximate chunk tokens (min / median / 95th percentile / max) | 6 / 182 / 215 / 220 |
+| Ingestion time | about 7 seconds |
+| Synthetic fixture topics deactivated by the full run | 3 |
+
+Observations, not yet analysed:
+
+- **A defect was found in the real data.** The v0 converter flattened HTML tables, so a blood pressure category table appeared as a run-on string of labels and numbers. Medical thresholds must stay attached to their labels. The table-aware converter fixes this; re-ingestion will rewrite the affected topics (the `updated` count shows how many).
+- For the query "high blood pressure", all of the top 3 passages came from one document. Whether the general topic page ranks lower is unknown. The retrieval benchmark (M1, M2) will measure this, along with document-level diversity.
+- The smallest chunk is 6 tokens. Tiny trailing chunks are a chunking question for the M2 ablation.
 
 ## Known limitations
 
